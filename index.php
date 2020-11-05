@@ -18,21 +18,21 @@ use Shocklogic\Gamification\Classes\Gamification;
 use Shocklogic\Gamification\Api\IconsRoute;
 use Shocklogic\Gamification\Api\UsersRoute;
 use Shocklogic\Gamification\PostTypes\Categories;
-use Shocklogic\Gamification\Gifts\Test;
+use Shocklogic\Gamification\Gifts\TestGift;
 
 $gamification = new Gamification();
 
-$gamification->addRoutes([
+$gamification->addElement('routes', [
     new IconsRoute(),
     new UsersRoute()
 ]);
 
-$gamification->addCustomPostTypes([
+$gamification->addElement('postTypes', [
     new Categories()
 ]);
 
-$gamification->addGifts([
-    new Test()
+$gamification->addElement('gifts', [
+    new TestGift()
 ]);
 
 $gamification->register();

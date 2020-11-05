@@ -92,6 +92,21 @@ class Gamification implements ISource
         
     }
 
+    public function addElement(string $property, array $elements)
+    {
+        if(! property_exists($this, $property)) {
+            return false;
+        }
+
+        foreach($elements as $element) {
+            array_push($this->$property, $element);
+        }
+    }
+
+
+    // Add and register should be generic functions
+    // use a variable variable $$ to achieve this without switchs
+
     // IApiRoute
     public function addRoutes($routes)
     {
