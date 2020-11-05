@@ -1,30 +1,29 @@
 <?php
 
 namespace Shocklogic\Gamification\Api;
+use Shocklogic\Gamification\Classes\Tables;
 
 // Implements IApi
 class UsersRoute 
 { 
     private $wpdb;
-    private $tables;
 
     public function __construct() {
         global $wpdb;
         $this->wpdb = $wpdb;
-        $this->tables = [
-            'users' => $this->wpdb->prefix . 'gamification_users'
-        ];
     }
 
     public function getUsers() 
     {
-        $table_name = $this->tables['users'];
+        // $table_name = $this->tables['users'];
+        $table_name = Tables::users();
+
         return $this->wpdb->get_results("SELECT * FROM $table_name");
     }
 
     public function getLeaderboard() 
     {
-        $table_name = $this->tables['users'];
+        $table_name = Tables::users();
         return $this->wpdb->get_results("SELECT * FROM $table_name ORDER BY points DESC");
     }
 

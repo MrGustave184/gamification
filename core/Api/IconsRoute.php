@@ -1,22 +1,16 @@
 <?php
 
 namespace Shocklogic\Gamification\Api;
+use Shocklogic\Gamification\Classes\Tables;
 
 // Implements IApi
 class IconsRoute 
 { 
     private $wpdb;
-    private $tables;
 
     public function __construct() {
         global $wpdb;
         $this->wpdb = $wpdb;
-
-        // Need to centralize tables
-        $this->tables = [
-            'users' => $this->wpdb->prefix . 'gamification_users',
-            'icons_users' => $this->wpdb->prefix . 'game_icons'
-        ];
     }
 
     public function createIcon($request) {
@@ -49,7 +43,7 @@ class IconsRoute
             'points' => $points
         ];
         
-        $isValidRecord = $this->wpdb->insert($this->tables['icons_users'], $record);
+        $isValidRecord = $this->wpdb->insert(Tables::icons(), $record);
 
         if(! $isValidRecord) {
             return [
@@ -66,14 +60,14 @@ class IconsRoute
 
     // Do we need to sanitize user id?
     private function registerUser($userId) {
-        return $this->wpdb->insert($this->tables['users'], [
+        return $this->wpdb->insert(Tables::users(), [
             'userId' => $userId,
             'points' => 0
         ]);
     }
 
     private function addPoints($data) {
-        $table_name = $this->tables['users'];
+        $table_name = Tables::users();
 
         return $this->wpdb->query($this->wpdb->prepare(
             "UPDATE $table_name SET points = points + %d WHERE userId = %d",
