@@ -15,7 +15,6 @@ class UsersRoute
 
     public function getUsers() 
     {
-        // $table_name = $this->tables['users'];
         $table_name = Tables::users();
 
         return $this->wpdb->get_results("SELECT * FROM $table_name");
@@ -27,6 +26,14 @@ class UsersRoute
         return $this->wpdb->get_results("SELECT * FROM $table_name ORDER BY points DESC");
     }
 
+    public function getUserPoints($request) 
+    {
+        $userId = $request['id'];
+        $table_name = Tables::users();
+
+        return $this->wpdb->get_results("SELECT points FROM $table_name WHERE userId = $userId");
+    }
+
     public function register_routes() {
         register_rest_route('shocklogic/gamification', 'users', [
             'methods' => 'GET',
@@ -36,6 +43,11 @@ class UsersRoute
         register_rest_route('shocklogic/gamification', 'leaderboard', [
             'methods' => 'GET',
             'callback' => [$this, 'getLeaderboard']
+        ]);
+
+        register_rest_route('shocklogic/gamification', '/users/(?P<id>[\d]+)', [
+            'methods' => 'GET',
+            'callback' => [$this, 'getUserPoints'],
         ]);
     }
 
