@@ -14,7 +14,7 @@ class IconsRoute
     }
 
     public function createIcon($request) {
-        $params = $request->get_json_params()['data'];
+        $params = $request->get_json_params();
         
         $this->registerUser($params['userId']);
 
