@@ -1,0 +1,9 @@
+{
+    "name": "shocklogic/gamification",
+    "description": "Gamificate the experience of Virtualogic events",
+    "autoload": {
+        "psr-4": {
+            "Shocklogic\\Gamification\\": "core/"
+        }
+    }
+}
