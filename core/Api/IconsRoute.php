@@ -18,21 +18,14 @@ class IconsRoute
         
         $this->registerUser($params['userId']);
 
-        // category function refactor
-        $category = get_posts([
-            'post_type' => 'gamif_categories',
-            'title' => $params['category']
-        ]);
+        $points = $this->calculatePointsByCategory($params['category']);
 
-        if(! $category) {
+        if(! $points) {
             return [
                 'category' => $category,
                 'error' => 'invalid category'
             ];
         }
-
-        $points = $this->calculatePointsByCategory($category);
-        // category function refactor
 
         // create icons function refactor
         $record = [
@@ -76,7 +69,16 @@ class IconsRoute
         ));
     }
 
-    private function calculatePointsByCategory($category) {
+    private function calculatePointsByCategory($requestCategory) {
+        $category = get_posts([
+            'post_type' => 'gamif_categories',
+            'title' => $requestCategory
+        ]);
+
+        if(! $category) {
+            return false;
+        }
+
         $points = get_post_meta($category[0]->ID, 'points');
 
         return (int)$points[0];
