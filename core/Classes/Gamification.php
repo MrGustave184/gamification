@@ -92,7 +92,7 @@ class Gamification implements ISource
     }
 
     // ISource
-    public function registerElement(string $property)
+    public function registerElement($property)
     {
         if(! property_exists($this, $property)) {
             return false;
@@ -106,7 +106,7 @@ class Gamification implements ISource
     }
 
     // ISource
-    public function addElement(string $property, array $elements)
+    public function addElement($property, array $elements)
     {
         if(! property_exists($this, $property)) {
             return false;
