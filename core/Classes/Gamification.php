@@ -86,10 +86,22 @@ class Gamification implements ISource
         register_activation_hook(FILE_PATH, [$this, 'install']);
         register_deactivation_hook(FILE_PATH, [$this, 'uninstall']);
 
-        $this->registerRoutes();
-        $this->registerCustomPostTypes();
-        $this->registerGifts();
-        
+        $this->registerElement('routes');
+        $this->registerElement('postTypes');
+        $this->registerElement('gifts');
+    }
+
+    public function registerElement(string $property)
+    {
+        if(! property_exists($this, $property)) {
+            return false;
+        }
+
+        if(count($this->$property)) {
+            foreach($this->$property as $element) {
+                $element->register();
+            }
+        }
     }
 
     public function addElement(string $property, array $elements)
@@ -100,60 +112,6 @@ class Gamification implements ISource
 
         foreach($elements as $element) {
             array_push($this->$property, $element);
-        }
-    }
-
-
-    // Add and register should be generic functions
-    // use a variable variable $$ to achieve this without switchs
-
-    // IApiRoute
-    public function addRoutes($routes)
-    {
-        foreach($routes as $route) {
-            array_push($this->routes, $route);
-        }
-    }
-
-    public function addCustomPostTypes($postTypes)
-    {
-        foreach($postTypes as $postType) {
-            array_push($this->postTypes, $postType);
-        }
-    }
-
-    // IApiRoute
-    public function registerRoutes() 
-    {
-        if(count($this->routes)) {
-            foreach($this->routes as $route) {
-                $route->register();
-            }
-        }
-    }
-
-    public function registerCustomPostTypes() 
-    {
-        if(count($this->postTypes)) {
-            foreach($this->postTypes as $postType) {
-                $postType->register();
-            }
-        }
-    }
-
-    public function addGifts($gifts)
-    {
-        foreach($gifts as $gift) {
-            array_push($this->gifts, $gift);
-        }
-    }
-
-    public function registerGifts() 
-    {
-        if(count($this->gifts)) {
-            foreach($this->gifts as $gift) {
-                $gift->register();
-            }
         }
     }
 }
